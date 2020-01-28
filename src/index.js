@@ -4,10 +4,27 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editorText: '',
+    };
+    this.handleEditorTextChange = this.handleEditorTextChange.bind(this);
+  }
+
+  handleEditorTextChange(text) {
+    this.setState({
+      editorText: text,
+    });
+  }
+
   render() {
     return (
       <div>
-        <Editor />
+        <Editor
+          editorText={this.state.editorText}
+          onEditorTextChange={this.handleEditorTextChange}
+        />
         <Preview />
       </div>
     );
@@ -15,17 +32,40 @@ class App extends React.Component {
 }
 
 class Editor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleEditorTextChange = this.handleEditorTextChange.bind(this);
+  }
+
+  handleEditorTextChange(event) {
+    this.props.onEditorTextChange(event.target.value);
+  }
+
   render() {
     const title = 'Editor';
+    const editorText = this.props.editorText;
 
     return (
       <div className="editorWrap">
         <Toolbar title={title} />
-        <textarea id="editor">Markdown goes here</textarea>
+        <textarea
+          id="editor"
+          onChange={this.handleEditorTextChange}
+          value={editorText}
+        ></textarea>
       </div>
     );
   }
 }
+
+Editor.defaultProps = {
+  editorText: '',
+  onEditorTextChange: function() {},
+};
+Editor.propTypes = {
+  editorText: PropTypes.string.isRequired,
+  onEditorTextChange: PropTypes.func.isRequired,
+};
 
 class Preview extends React.Component {
   render() {
