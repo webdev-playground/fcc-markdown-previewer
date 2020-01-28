@@ -60,8 +60,12 @@ class App extends React.Component {
     super(props);
     this.state = {
       editorText: defaultEditorText,
+      editorMaximized: false,
+      previewMaximized: false,
     };
     this.handleEditorTextChange = this.handleEditorTextChange.bind(this);
+    this.handleEditorMaximize = this.handleEditorMaximize.bind(this);
+    this.handlePreviewMaximize = this.handlePreviewMaximize.bind(this);
   }
 
   handleEditorTextChange(text) {
@@ -70,14 +74,32 @@ class App extends React.Component {
     });
   }
 
+  handleEditorMaximize() {
+    this.setState(state => ({
+      editorMaximized: !state.editorMaximized,
+      previewMaximized: false,
+    }));
+  }
+
+  handlePreviewMaximize() {
+    this.setState(state => ({
+      previewMaximized: !state.previewMaximized,
+      editorMaximized: false,
+    }));
+  }
+
   render() {
     return (
       <div className="appWrap">
         <Editor
           editorText={this.state.editorText}
           onEditorTextChange={this.handleEditorTextChange}
+          onEditorMaximize={this.handleEditorMaximize}
         />
-        <Preview editorText={this.state.editorText} />
+        <Preview
+          editorText={this.state.editorText}
+          onPreviewMaximize={this.handlePreviewMaximize}
+        />
       </div>
     );
   }
@@ -87,10 +109,15 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.handleEditorTextChange = this.handleEditorTextChange.bind(this);
+    this.handleEditorMaximize = this.handleEditorMaximize.bind(this);
   }
 
   handleEditorTextChange(event) {
     this.props.onEditorTextChange(event.target.value);
+  }
+
+  handleEditorMaximize() {
+    this.props.onEditorMaximize();
   }
 
   render() {
@@ -99,7 +126,7 @@ class Editor extends React.Component {
 
     return (
       <div className="editorWrap">
-        <Toolbar title={title} />
+        <Toolbar title={title} onClick={this.handleEditorMaximize} />
         <textarea
           id="editor"
           onChange={this.handleEditorTextChange}
@@ -113,13 +140,24 @@ class Editor extends React.Component {
 Editor.defaultProps = {
   editorText: '',
   onEditorTextChange: function() {},
+  onEditorMaximize: function() {},
 };
 Editor.propTypes = {
   editorText: PropTypes.string.isRequired,
   onEditorTextChange: PropTypes.func.isRequired,
+  onEditorMaximize: PropTypes.func.isRequired,
 };
 
 class Preview extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handlePreviewMaximize = this.handlePreviewMaximize.bind(this);
+  }
+
+  handlePreviewMaximize() {
+    this.props.onPreviewMaximize();
+  }
+
   render() {
     const title = 'Previewer';
     const editorText = this.props.editorText;
@@ -127,7 +165,7 @@ class Preview extends React.Component {
 
     return (
       <div className="previewWrap">
-        <Toolbar title={title} />
+        <Toolbar title={title} onClick={this.handlePreviewMaximize} />
         <div
           id="preview"
           dangerouslySetInnerHTML={{ __html: markdownPreview }}
@@ -137,7 +175,23 @@ class Preview extends React.Component {
   }
 }
 
+Preview.defaultProps = {
+  onPreviewMaximize: function() {},
+};
+Preview.propTypes = {
+  onPreviewMaximize: PropTypes.func.isRequired,
+};
+
 class Toolbar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.props.onClick();
+  }
+
   render() {
     const title = this.props.title;
 
@@ -148,7 +202,7 @@ class Toolbar extends React.Component {
             <i className="fa fa-free-code-camp"></i> {title}
           </div>
           <div className="col-auto">
-            <i className="fa fa-arrows-alt"></i>
+            <i className="fa fa-arrows-alt" onClick={this.handleClick}></i>
           </div>
         </div>
       </div>
@@ -159,10 +213,12 @@ class Toolbar extends React.Component {
 Toolbar.defaultProps = {
   editorText: '',
   title: 'Toolbar',
+  onClick: function() {},
 };
 Toolbar.propTypes = {
   editorText: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 ReactDOM.render(<App />, document.getElementById('root'));
