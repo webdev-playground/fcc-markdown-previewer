@@ -44,3 +44,8 @@ code {
 .hidden {
   display: none;
 }
+
+.fa-compress,
+.fa-arrows-alt {
+  cursor: pointer;
+}

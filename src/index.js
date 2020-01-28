@@ -136,7 +136,11 @@ class Editor extends React.Component {
 
     return (
       <div className={editorClass}>
-        <Toolbar title={title} onClick={this.handleEditorMaximize} />
+        <Toolbar
+          maximized={editorMaximized}
+          title={title}
+          onClick={this.handleEditorMaximize}
+        />
         <textarea
           id="editor"
           onChange={this.handleEditorTextChange}
@@ -185,7 +189,11 @@ class Preview extends React.Component {
 
     return (
       <div className={previewClass}>
-        <Toolbar title={title} onClick={this.handlePreviewMaximize} />
+        <Toolbar
+          maximized={previewMaximized}
+          title={title}
+          onClick={this.handlePreviewMaximize}
+        />
         <div
           id="preview"
           dangerouslySetInnerHTML={{ __html: markdownPreview }}
@@ -220,6 +228,8 @@ class Toolbar extends React.Component {
 
   render() {
     const title = this.props.title;
+    const maximized = this.props.maximized;
+    const arrowsClass = maximized ? 'fa fa-compress' : 'fa fa-arrows-alt';
 
     return (
       <div className="toolbar">
@@ -228,7 +238,7 @@ class Toolbar extends React.Component {
             <i className="fa fa-free-code-camp"></i> {title}
           </div>
           <div className="col-auto">
-            <i className="fa fa-arrows-alt" onClick={this.handleClick}></i>
+            <i className={arrowsClass} onClick={this.handleClick}></i>
           </div>
         </div>
       </div>
@@ -238,11 +248,13 @@ class Toolbar extends React.Component {
 
 Toolbar.defaultProps = {
   editorText: '',
+  maximized: false,
   title: 'Toolbar',
   onClick: function() {},
 };
 Toolbar.propTypes = {
   editorText: PropTypes.string.isRequired,
+  maximized: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
