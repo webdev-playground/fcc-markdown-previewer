@@ -93,10 +93,14 @@ class App extends React.Component {
       <div className="appWrap">
         <Editor
           editorText={this.state.editorText}
+          editorMaximized={this.state.editorMaximized}
+          previewMaximized={this.state.previewMaximized}
           onEditorTextChange={this.handleEditorTextChange}
           onEditorMaximize={this.handleEditorMaximize}
         />
         <Preview
+          editorMaximized={this.state.editorMaximized}
+          previewMaximized={this.state.previewMaximized}
           editorText={this.state.editorText}
           onPreviewMaximize={this.handlePreviewMaximize}
         />
@@ -123,9 +127,15 @@ class Editor extends React.Component {
   render() {
     const title = 'Editor';
     const editorText = this.props.editorText;
+    const editorMaximized = this.props.editorMaximized;
+    const previewMaximized = this.props.previewMaximized;
+
+    const editorClass =
+      'editorWrap ' +
+      (previewMaximized ? 'hidden ' : editorMaximized ? 'maximized ' : '');
 
     return (
-      <div className="editorWrap">
+      <div className={editorClass}>
         <Toolbar title={title} onClick={this.handleEditorMaximize} />
         <textarea
           id="editor"
@@ -139,11 +149,15 @@ class Editor extends React.Component {
 
 Editor.defaultProps = {
   editorText: '',
+  editorMaximized: false,
+  previewMaximized: false,
   onEditorTextChange: function() {},
   onEditorMaximize: function() {},
 };
 Editor.propTypes = {
   editorText: PropTypes.string.isRequired,
+  editorMaximized: PropTypes.bool.isRequired,
+  previewMaximized: PropTypes.bool.isRequired,
   onEditorTextChange: PropTypes.func.isRequired,
   onEditorMaximize: PropTypes.func.isRequired,
 };
@@ -161,10 +175,16 @@ class Preview extends React.Component {
   render() {
     const title = 'Previewer';
     const editorText = this.props.editorText;
+    const editorMaximized = this.props.editorMaximized;
+    const previewMaximized = this.props.previewMaximized;
     const markdownPreview = marked(editorText); // unsanitized
 
+    const previewClass =
+      'previewWrap ' +
+      (editorMaximized ? 'hidden ' : previewMaximized ? 'maximized ' : '');
+
     return (
-      <div className="previewWrap">
+      <div className={previewClass}>
         <Toolbar title={title} onClick={this.handlePreviewMaximize} />
         <div
           id="preview"
@@ -176,9 +196,15 @@ class Preview extends React.Component {
 }
 
 Preview.defaultProps = {
+  editorText: '',
+  editorMaximized: false,
+  previewMaximized: false,
   onPreviewMaximize: function() {},
 };
 Preview.propTypes = {
+  editorText: PropTypes.string.isRequired,
+  editorMaximized: PropTypes.bool.isRequired,
+  previewMaximized: PropTypes.bool.isRequired,
   onPreviewMaximize: PropTypes.func.isRequired,
 };
 
