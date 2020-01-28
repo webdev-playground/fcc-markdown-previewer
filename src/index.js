@@ -21,6 +21,7 @@ class Editor extends React.Component {
     return (
       <div className="editorWrap">
         <Toolbar title={title} />
+        <textarea id="editor">Markdown goes here</textarea>
       </div>
     );
   }
@@ -33,6 +34,7 @@ class Preview extends React.Component {
     return (
       <div className="previewWrap">
         <Toolbar title={title} />
+        <div id="preview">Markdown preview goes here</div>
       </div>
     );
   }
