@@ -16,14 +16,41 @@ class App extends React.Component {
 
 class Editor extends React.Component {
   render() {
-    return <div className="editorWrap">Editor</div>;
+    const title = 'Editor';
+
+    return (
+      <div className="editorWrap">
+        <Toolbar title={title} />
+      </div>
+    );
   }
 }
 
 class Preview extends React.Component {
   render() {
-    return <div className="previewWrap">Preview</div>;
+    const title = 'Previewer';
+
+    return (
+      <div className="previewWrap">
+        <Toolbar title={title} />
+      </div>
+    );
   }
 }
+
+class Toolbar extends React.Component {
+  render() {
+    const title = this.props.title;
+
+    return <div className="toolbar">{title}</div>;
+  }
+}
+
+Toolbar.defaultProps = {
+  title: 'Toolbar',
+};
+Toolbar.propTypes = {
+  title: PropTypes.string.isRequired,
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));
