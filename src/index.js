@@ -142,7 +142,11 @@ class Toolbar extends React.Component {
   render() {
     const title = this.props.title;
 
-    return <div className="toolbar">{title}</div>;
+    return (
+      <div className="toolbar">
+        <i className="fa fa-free-code-camp"></i> {title}
+      </div>
+    );
   }
 }
 
