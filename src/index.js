@@ -4,6 +4,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+marked.setOptions({
+  breaks: true,
+});
+
 const defaultEditorText = `
 # Welcome to my React Markdown Previewer!
 
