@@ -8,13 +8,12 @@ marked.setOptions({
   breaks: true,
 });
 
-const defaultEditorText = `
-# Welcome to my React Markdown Previewer!
+const defaultEditorText = `# Welcome to my React Markdown Previewer!
 
 ## This is a sub-heading...
 ### And here's some other cool stuff:
 
-Heres some code, \`<div></div>\`, between 2 backticks.
+Here's some code, \`<div></div>\`, between 2 backticks.
 
 \`\`\`
 // this is multi-line code:
@@ -73,7 +72,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="appWrap">
         <Editor
           editorText={this.state.editorText}
           onEditorTextChange={this.handleEditorTextChange}
@@ -144,7 +143,14 @@ class Toolbar extends React.Component {
 
     return (
       <div className="toolbar">
-        <i className="fa fa-free-code-camp"></i> {title}
+        <div className="row">
+          <div className="col-auto mr-auto">
+            <i className="fa fa-free-code-camp"></i> {title}
+          </div>
+          <div className="col-auto">
+            <i className="fa fa-arrows-alt"></i>
+          </div>
+        </div>
       </div>
     );
   }

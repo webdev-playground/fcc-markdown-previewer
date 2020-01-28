@@ -11,3 +11,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#editor {
+  width: 100%;
+  min-height: 200px;
+}
+
+.appWrap {
+  margin: 18px auto;
+}
+
+.editorWrap {
+  max-width: 600px;
+  margin: 30px auto;
+}
+
+.previewWrap {
+  max-width: 800px;
+  margin: 30px auto;
+}
+
+.toolbar {
+  font-weight: bold;
+}
