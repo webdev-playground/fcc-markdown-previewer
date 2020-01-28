@@ -1,3 +1,4 @@
+import marked from 'marked';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -25,7 +26,7 @@ class App extends React.Component {
           editorText={this.state.editorText}
           onEditorTextChange={this.handleEditorTextChange}
         />
-        <Preview />
+        <Preview editorText={this.state.editorText} />
       </div>
     );
   }
@@ -70,11 +71,16 @@ Editor.propTypes = {
 class Preview extends React.Component {
   render() {
     const title = 'Previewer';
+    const editorText = this.props.editorText;
+    const markdownPreview = marked(editorText); // unsanitized
 
     return (
       <div className="previewWrap">
         <Toolbar title={title} />
-        <div id="preview">Markdown preview goes here</div>
+        <div
+          id="preview"
+          dangerouslySetInnerHTML={{ __html: markdownPreview }}
+        ></div>
       </div>
     );
   }
@@ -89,9 +95,11 @@ class Toolbar extends React.Component {
 }
 
 Toolbar.defaultProps = {
+  editorText: '',
   title: 'Toolbar',
 };
 Toolbar.propTypes = {
+  editorText: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
 };
 
